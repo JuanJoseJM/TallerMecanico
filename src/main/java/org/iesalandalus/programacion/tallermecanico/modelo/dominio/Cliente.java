@@ -29,7 +29,7 @@ public class Cliente {
 
     public static Cliente get(String dni){
 
-        return new Cliente("Cliente Prueba", dni, "123456789");
+        return new Cliente("Bob Esponja", dni, "111111111");
     }
     public void setNombre(String nombre){
         Objects.requireNonNull(nombre,"El nombre no puede ser nulo.");
