@@ -5,13 +5,13 @@ import java.util.Objects;
 public record Vehiculo(String marca, String modelo, String matricula) {
 
     private static final String ER_MARCA = "[A-Z]+[a-z]*([ -]?[A-Z][a-z]+)*";
+
     private static final String ER_MATRICULA = "^\\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}";
 
     public Vehiculo(String marca, String modelo, String matricula) {
         validarMarca(marca);
         validarModelo(modelo);
         validarMatricula(matricula);
-
         this.marca = marca;
         this.modelo = modelo;
         this.matricula = matricula;
