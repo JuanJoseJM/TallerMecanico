@@ -12,11 +12,9 @@ import java.util.Objects;
 
 public class Revisiones {
     private List<Revision> coleccionRevisiones;
-
     public Revisiones() {
         coleccionRevisiones = new ArrayList<>();
     }
-
     public List<Revision> get() {
         return new ArrayList<>(coleccionRevisiones);
     }
