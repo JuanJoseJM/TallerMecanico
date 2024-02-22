@@ -82,6 +82,7 @@ public class Consola {
         String modelo = Entrada.cadena();
         return new Vehiculo(marca,modelo,matricula);
     }
+
     public static Vehiculo leerMatriculaVehiculo(){
         System.out.println("Dime la matricula del vehiculo");
         String matricula= Entrada.cadena();
