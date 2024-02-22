@@ -30,7 +30,7 @@ public class Consola {
         int opcion = leerEntero("Elige una opción.");
 
         if(!Opcion.esValida(opcion )){
-            throw new IllegalArgumentException("La opcion no es válida");
+            throw new IllegalArgumentException("La opción no es válida");
         }
         return Opcion.get(opcion);
     }
@@ -93,7 +93,6 @@ public class Consola {
     }
 
     public static int leerHoras(){
-
         return leerEntero("Dime la cantidad de horas");
     }
 
