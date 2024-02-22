@@ -24,7 +24,7 @@ public class Consola {
         }
     }
     public static Opcion elegirOpcion(){
-        int opcion = leerEntero("Dime la opcion que quieres elegir.");
+        int opcion = leerEntero("Elige una opción.");
         if(!Opcion.esValida(opcion )){
             throw new IllegalArgumentException("La opcion no es válida");
         }
@@ -53,7 +53,7 @@ public class Consola {
 
         return new Cliente(leerNuevoNombre(), leerCadena("Dime el dni del cliente"), leerNuevoTelefono());
     }
-    public static Cliente leerClieneDni(){
+    public static Cliente leerClienteDni(){
         return Cliente.get(leerCadena("Dime el dni del cliente"));
     }
     public static String leerNuevoNombre(){
@@ -79,7 +79,7 @@ public class Consola {
         return Vehiculo.get(matricula);
     }
     public static Revision leerRevision(){
-        return new Revision(leerClieneDni(),leerMatriculaVehiculo(),leerFecha("Introduce la fecha de inicio"));
+        return new Revision(leerClienteDni(),leerMatriculaVehiculo(),leerFecha("Introduce la fecha de inicio"));
     }
     public static int leerHoras(){
 
@@ -87,7 +87,7 @@ public class Consola {
     }
     public static float leerPrecioMaterial(){
 
-        return leerReal("Dime el precio material");
+        return leerReal("Dime el precio del material");
     }
     public static LocalDate leerFechaCierre(){
         return leerFecha("Dime la fecha fin de la revisión");

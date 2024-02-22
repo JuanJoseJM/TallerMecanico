@@ -57,7 +57,6 @@ public class Revisiones {
         }
     }
 
-
     public void insertar(Revision revision) throws OperationNotSupportedException {
         Objects.requireNonNull(revision, "No se puede insertar una revisión nula.");
 
@@ -104,7 +103,6 @@ public class Revisiones {
         Revision aux = null;
         if (indice != -1) {
             aux = coleccionRevisiones.get(indice);
-
         }
         return aux;
     }

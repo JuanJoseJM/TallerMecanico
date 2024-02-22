@@ -50,6 +50,6 @@ public enum  Opcion {
 
     @Override
     public String toString() {
-        return String.format("Opcion[nombre=%s, numeroOpcion=%s]", this.nombre, this.numeroOpcion);
+        return String.format("%s-> %s", this.numeroOpcion,  this.nombre);
     }
 }

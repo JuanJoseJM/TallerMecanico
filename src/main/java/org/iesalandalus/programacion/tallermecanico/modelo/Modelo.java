@@ -1,6 +1,5 @@
 package org.iesalandalus.programacion.tallermecanico.modelo;
 
-
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Revision;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
@@ -12,6 +11,7 @@ import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Modelo {
     private Clientes clientes;
@@ -38,7 +38,9 @@ public class Modelo {
         revisiones.insertar(new Revision(cliente,vehiculo,revision.getFechaInicio()));
     }
     public Cliente buscar(Cliente cliente){
-        return clientes.buscar(cliente);
+       // return new clientes.buscar(cliente);
+        cliente = Objects.requireNonNull(clientes.buscar(cliente));
+        return new Cliente(cliente);
     }
     public Vehiculo buscar(Vehiculo vehiculo){
         return vehiculos.buscar(vehiculo);

@@ -91,11 +91,10 @@ public class Vista {
         controlador.getRevisiones();
     }
     private void  modificarCliente() throws OperationNotSupportedException {
-        controlador.modificar(Consola.leerClieneDni(),Consola.leerNuevoNombre(),Consola.leerNuevoTelefono());
+        controlador.modificar(Consola.leerClienteDni(),Consola.leerNuevoNombre(),Consola.leerNuevoTelefono());
     }
     private void anadirHoras(){
         controlador.anadirHoras(Consola.leerRevision(),Consola.leerHoras());
-        //** no SE
     }
     private void anadirPrecioMaterial() throws OperationNotSupportedException {
         controlador.anadirPrecioMaterial(Consola.leerRevision(),Consola.leerPrecioMaterial());
