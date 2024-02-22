@@ -32,10 +32,12 @@ public enum  Opcion {
             opciones.put(opcion.numeroOpcion, opcion);
         }
     }
+
     Opcion(String nombre, Integer opcion) {
         this.nombre = nombre;
         this.numeroOpcion = opcion;
     }
+
     public static boolean esValida(int numeroOpcion) {
         Objects.requireNonNull(numeroOpcion,"El numero no es valido");
         return opciones.containsKey(numeroOpcion);
