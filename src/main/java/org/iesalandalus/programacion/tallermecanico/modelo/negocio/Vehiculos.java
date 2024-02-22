@@ -14,7 +14,6 @@ public class Vehiculos {
     }
 
     public List<Vehiculo> get() {
-
         return new ArrayList<>(coleccionVehiculos);
     }
 
