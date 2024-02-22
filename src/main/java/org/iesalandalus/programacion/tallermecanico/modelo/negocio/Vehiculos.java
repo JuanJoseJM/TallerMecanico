@@ -24,6 +24,7 @@ public class Vehiculos {
         }
         coleccionVehiculos.add(vehiculo);
     }
+
     public Vehiculo buscar(Vehiculo vehiculo) {
         Objects.requireNonNull(vehiculo, "No se puede buscar un vehículo nulo.");
         int indice = coleccionVehiculos.indexOf(vehiculo);
