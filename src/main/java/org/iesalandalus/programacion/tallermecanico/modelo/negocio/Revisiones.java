@@ -68,7 +68,6 @@ public class Revisiones {
         coleccionRevisiones.add(revision);
     }
 
-
     public void anadirHoras(Revision revision, int horas) throws OperationNotSupportedException {
         Objects.requireNonNull(revision, "No puedo operar sobre una revisión nula.");
 
