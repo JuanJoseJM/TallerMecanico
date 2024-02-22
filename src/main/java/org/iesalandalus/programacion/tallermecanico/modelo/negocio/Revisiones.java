@@ -65,7 +65,6 @@ public class Revisiones {
         LocalDate fechaRevision = revision.getFechaInicio();
 
         comprobarRevision(cliente, vehiculo, fechaRevision);
-
         coleccionRevisiones.add(revision);
     }
 
@@ -96,11 +95,11 @@ public class Revisiones {
         }
         revision.cerrar(fechaFin);
     }
-
     public Revision buscar(Revision revision) {
         Objects.requireNonNull(revision, "No se puede buscar una revisión nula.");
         int indice = coleccionRevisiones.indexOf(revision);
         Revision aux = null;
+
         if (indice != -1) {
             aux = coleccionRevisiones.get(indice);
         }
@@ -109,7 +108,6 @@ public class Revisiones {
 
     public void borrar(Revision revision) throws OperationNotSupportedException {
         Objects.requireNonNull(revision, "No se puede borrar una revisión nula.");
-
         int indice = coleccionRevisiones.indexOf(revision);
 
         if (indice == -1) {

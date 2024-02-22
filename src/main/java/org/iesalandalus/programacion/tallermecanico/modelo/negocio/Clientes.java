@@ -10,7 +10,6 @@ import java.util.Objects;
 
 public class Clientes {
     private List<Cliente> coleccionClientes;
-
     public Clientes() {
         coleccionClientes = new ArrayList<>();
     }

@@ -108,7 +108,6 @@ public class Modelo {
         for (Revision revision : revisiones.get(vehiculo)) {
             listaRevisonesIgualVehiculo.add(new Revision (revision));
         }
-
         return listaRevisonesIgualVehiculo;
     }
 }
