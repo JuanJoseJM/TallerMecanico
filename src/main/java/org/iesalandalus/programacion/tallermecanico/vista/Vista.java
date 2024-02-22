@@ -125,5 +125,4 @@ public class Vista {
     public void listarRevisionesVehiculo(){
         controlador.getRevisiones(Consola.leerVehiculo());
     }
-
 }

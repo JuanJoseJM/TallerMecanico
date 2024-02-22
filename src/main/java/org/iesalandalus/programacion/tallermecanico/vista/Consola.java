@@ -25,6 +25,7 @@ public class Consola {
     }
     public static Opcion elegirOpcion(){
         int opcion = leerEntero("Elige una opción.");
+
         if(!Opcion.esValida(opcion )){
             throw new IllegalArgumentException("La opcion no es válida");
         }
@@ -35,27 +36,32 @@ public class Consola {
         System.out.println(mensaje);
         return Entrada.real();
     }
+
     public static int leerEntero(String mensaje){
         System.out.println(mensaje);
         return Entrada.entero();
     }
+
     public static String leerCadena(String mensaje){
         System.out.println(mensaje);
         return Entrada.cadena();
     }
+
     public static LocalDate leerFecha(String mensaje){
         System.out.println(mensaje);
         String fecha = Entrada.cadena();
         return LocalDate.parse(fecha, DateTimeFormatter.ofPattern(CADENA_FORMATO_FECHA));
-
     }
+
     public static Cliente leerCliente( ){
 
         return new Cliente(leerNuevoNombre(), leerCadena("Dime el dni del cliente"), leerNuevoTelefono());
     }
+
     public static Cliente leerClienteDni(){
         return Cliente.get(leerCadena("Dime el dni del cliente"));
     }
+
     public static String leerNuevoNombre(){
         return leerCadena("Dime el nombre del cliente");
     }
@@ -64,6 +70,7 @@ public class Consola {
         System.out.println("Dime el nuevo telefono del cliente");
         return Entrada.cadena();
     }
+
     public static Vehiculo leerVehiculo(){
         System.out.println("Dime la marca del vehiculo");
         String marca = Entrada.cadena();
@@ -81,14 +88,16 @@ public class Consola {
     public static Revision leerRevision(){
         return new Revision(leerClienteDni(),leerMatriculaVehiculo(),leerFecha("Introduce la fecha de inicio"));
     }
+
     public static int leerHoras(){
 
         return leerEntero("Dime la cantidad de horas");
     }
-    public static float leerPrecioMaterial(){
 
+    public static float leerPrecioMaterial(){
         return leerReal("Dime el precio del material");
     }
+
     public static LocalDate leerFechaCierre(){
         return leerFecha("Dime la fecha fin de la revisión");
     }
