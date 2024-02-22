@@ -22,7 +22,7 @@ public class Vista {
         }while (opcion != Opcion.SALIR);
     }
 
-    public  void terminar(){
+    public void terminar(){
         System.out.println("Fin");
     }
 
