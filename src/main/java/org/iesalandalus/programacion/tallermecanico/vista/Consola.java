@@ -13,16 +13,19 @@ public class Consola {
 
     public Consola() {
     }
+
     public static void mostrarCabecera(String mensaje){
         System.out.println(mensaje);
         String subrayado = String.format(String.format("%%0%dd", mensaje.length()), 0).replace('0', '-');
         System.out.println(subrayado);
     }
+
     public static void  mostrarMenu(){
         for (Opcion opcion:Opcion.values()) {
             System.out.println(opcion);
         }
     }
+
     public static Opcion elegirOpcion(){
         int opcion = leerEntero("Elige una opción.");
 
@@ -30,8 +33,8 @@ public class Consola {
             throw new IllegalArgumentException("La opcion no es válida");
         }
         return Opcion.get(opcion);
-
     }
+
     public static float leerReal(String mensaje){
         System.out.println(mensaje);
         return Entrada.real();
@@ -54,7 +57,6 @@ public class Consola {
     }
 
     public static Cliente leerCliente( ){
-
         return new Cliente(leerNuevoNombre(), leerCadena("Dime el dni del cliente"), leerNuevoTelefono());
     }
 
@@ -85,6 +87,7 @@ public class Consola {
         String matricula= Entrada.cadena();
         return Vehiculo.get(matricula);
     }
+
     public static Revision leerRevision(){
         return new Revision(leerClienteDni(),leerMatriculaVehiculo(),leerFecha("Introduce la fecha de inicio"));
     }
