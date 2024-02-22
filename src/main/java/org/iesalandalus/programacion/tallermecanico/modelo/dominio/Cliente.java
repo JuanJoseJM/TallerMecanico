@@ -37,7 +37,6 @@ public class Cliente {
             throw new IllegalArgumentException("El nombre no tiene un formato válido.");
         }
         this.nombre= nombre;
-
     }
 
     public String getDni() {
@@ -66,6 +65,7 @@ public class Cliente {
         }
         this.telefono = telefono;
     }
+
     private static boolean comprobarLetraDni(String dni){
         String letraDni = "TRWAGMYFPDXBNJZSQVHLCKE";
         char letra = Character.toUpperCase(dni.charAt(8));

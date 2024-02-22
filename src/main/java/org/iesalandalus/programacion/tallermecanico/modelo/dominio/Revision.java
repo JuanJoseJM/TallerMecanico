@@ -96,7 +96,6 @@ public class Revision {
         if (horas <= 0) {
             throw new IllegalArgumentException("Las horas a añadir deben ser mayores que cero.");
         }
-
         this.horas += horas;
     }
 
@@ -145,6 +144,7 @@ public class Revision {
 
     private float getDias() {
         float dias = 0;
+
         if (fechaFin != null) {
             dias= (float) fechaInicio.until(fechaFin).getDays();
         }
@@ -177,7 +177,6 @@ public class Revision {
             float precioTotal = getPrecio();
             cadena += String.format(", %.2f € total", precioTotal);
         }
-
         return cadena;
     }
 }

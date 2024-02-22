@@ -3,9 +3,7 @@ package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 import java.util.Objects;
 
 public record Vehiculo(String marca, String modelo, String matricula) {
-
     private static final String ER_MARCA = "[A-Z]+[a-z]*([ -]?[A-Z][a-z]+)*";
-
     private static final String ER_MATRICULA = "^\\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}";
 
     public Vehiculo(String marca, String modelo, String matricula) {
@@ -27,6 +25,7 @@ public record Vehiculo(String marca, String modelo, String matricula) {
 
     private void validarModelo(String modelo) {
         Objects.requireNonNull(modelo, "El modelo no puede ser nulo.");
+
         if (modelo.isBlank()) {
             throw new IllegalArgumentException("El modelo no puede estar en blanco.");
         }
@@ -34,6 +33,7 @@ public record Vehiculo(String marca, String modelo, String matricula) {
 
     private void validarMatricula(String matricula) {
         Objects.requireNonNull(matricula, "La matrícula no puede ser nula.");
+
         if (!matricula.matches(ER_MATRICULA)) {
             throw new IllegalArgumentException("La matrícula no tiene un formato válido.");
         }
