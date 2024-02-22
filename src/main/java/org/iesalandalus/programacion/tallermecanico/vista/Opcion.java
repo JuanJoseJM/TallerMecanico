@@ -26,6 +26,7 @@ public enum  Opcion {
     SALIR("Salir",19);
     private  String nombre;
     private  Integer numeroOpcion;
+
     private static final Map<Integer, Opcion> opciones = new HashMap<>();
     static {
         for (Opcion opcion:values()) {
