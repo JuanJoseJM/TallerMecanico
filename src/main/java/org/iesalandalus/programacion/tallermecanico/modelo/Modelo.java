@@ -95,6 +95,7 @@ public class Modelo {
         }
         return listaClientes;
     }
+
     public List<Vehiculo> getVehiculos(){
         return new ArrayList<>(vehiculos.get());
     }
