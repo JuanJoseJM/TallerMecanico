@@ -25,7 +25,6 @@ public class Modelo {
     }
 
     public void terminar(){
-        System.out.println("Fin");
     }
 
     public void insertar(Cliente cliente) throws OperationNotSupportedException {
