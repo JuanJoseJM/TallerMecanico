@@ -53,7 +53,6 @@ public class Modelo {
 
     public Revision buscar(Revision revision){
         return revisiones.buscar(revision);
-
     }
 
     public boolean modificar(Cliente cliente,String nombre, String telefono) throws OperationNotSupportedException {
