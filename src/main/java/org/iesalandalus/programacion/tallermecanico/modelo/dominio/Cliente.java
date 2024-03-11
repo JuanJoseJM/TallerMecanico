@@ -23,14 +23,9 @@ public class Cliente {
     }
 
     public String getNombre() {
-
         return nombre;
     }
 
-    public static Cliente get(String dni){
-
-        return new Cliente("Bob Esponja", dni, "111111111");
-    }
     public void setNombre(String nombre){
         Objects.requireNonNull(nombre,"El nombre no puede ser nulo.");
         if (!nombre.matches(ER_NOMBRE)){
@@ -54,6 +49,14 @@ public class Cliente {
         this.dni = dni;
     }
 
+    private static boolean comprobarLetraDni(String dni){
+        String letraDni = "TRWAGMYFPDXBNJZSQVHLCKE";
+        char letra = Character.toUpperCase(dni.charAt(8));
+        String numeroDni = dni.substring(0,8);
+        int numero = Integer.parseInt(numeroDni);
+        return letra == letraDni.charAt(numero%23);
+    }
+
     public String getTelefono() {
         return telefono;
     }
@@ -66,18 +69,8 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    private static boolean comprobarLetraDni(String dni){
-        String letraDni = "TRWAGMYFPDXBNJZSQVHLCKE";
-        char letra = Character.toUpperCase(dni.charAt(8));
-        String numeroDni = dni.substring(0,8);
-        int numero = Integer.parseInt(numeroDni);
-        return letra == letraDni.charAt(numero%23);
-    }
-
-
-    @Override
-    public String toString() {
-        return String.format("%s - %s (%s)", nombre, dni, telefono);
+    public static Cliente get(String dni){
+        return new Cliente("Bob Esponja", dni, "111111111");
     }
 
     @Override
@@ -86,8 +79,14 @@ public class Cliente {
         if (!(o instanceof Cliente cliente)) return false;
         return Objects.equals(dni, cliente.dni);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(dni);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s (%s)", nombre, dni, telefono);
     }
 }
