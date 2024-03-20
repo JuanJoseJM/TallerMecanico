@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 
 import java.util.Objects;
+import java.util.Objects;
 public class Cliente {
     private static final String ER_NOMBRE = "(([A-Z][a-záéíóú]+)( [A-Z][a-záéíóú]+)*)";
     private static final String ER_DNI = "\\d{8}[A-Z]";
@@ -23,15 +24,20 @@ public class Cliente {
     }
 
     public String getNombre() {
+
         return nombre;
     }
+    public static Cliente get(String dni){
 
+        return new Cliente("Cliente Prueba", dni, "123456789");
+    }
     public void setNombre(String nombre){
         Objects.requireNonNull(nombre,"El nombre no puede ser nulo.");
         if (!nombre.matches(ER_NOMBRE)){
             throw new IllegalArgumentException("El nombre no tiene un formato válido.");
         }
         this.nombre= nombre;
+
     }
 
     public String getDni() {
@@ -49,14 +55,6 @@ public class Cliente {
         this.dni = dni;
     }
 
-    private static boolean comprobarLetraDni(String dni){
-        String letraDni = "TRWAGMYFPDXBNJZSQVHLCKE";
-        char letra = Character.toUpperCase(dni.charAt(8));
-        String numeroDni = dni.substring(0,8);
-        int numero = Integer.parseInt(numeroDni);
-        return letra == letraDni.charAt(numero%23);
-    }
-
     public String getTelefono() {
         return telefono;
     }
@@ -68,9 +66,18 @@ public class Cliente {
         }
         this.telefono = telefono;
     }
+    private static boolean comprobarLetraDni(String dni){
+        String letraDni = "TRWAGMYFPDXBNJZSQVHLCKE";
+        char letra = Character.toUpperCase(dni.charAt(8));
+        String numeroDni = dni.substring(0,8);
+        int numero = Integer.parseInt(numeroDni);
+        return letra == letraDni.charAt(numero%23);
+    }
 
-    public static Cliente get(String dni){
-        return new Cliente("Bob Esponja", dni, "111111111");
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s (%s)", nombre, dni, telefono);
     }
 
     @Override
@@ -79,14 +86,8 @@ public class Cliente {
         if (!(o instanceof Cliente cliente)) return false;
         return Objects.equals(dni, cliente.dni);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(dni);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s - %s (%s)", nombre, dni, telefono);
     }
 }

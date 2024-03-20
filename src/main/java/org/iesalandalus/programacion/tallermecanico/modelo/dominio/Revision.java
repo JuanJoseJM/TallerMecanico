@@ -3,23 +3,32 @@ package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 import java.time.LocalDate;
 
 public class Revision extends Trabajo {
-    private static final float FACTOR_HORA = 35;
+    private static final float FACTOR_HORA = 35.0f;
 
-    public Revision(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
-        super(cliente, vehiculo, fechaInicio);
-    }
 
-    public Revision(Revision revision) {
-        super(revision);
+    public Revision(Cliente cliente, Vehiculo vehiculo,LocalDate fechaInicio ) {
+        super(fechaInicio, vehiculo, cliente);
     }
 
     @Override
     public float getPrecioEspecifico() {
-        return (FACTOR_HORA * getHoras());
+        return getHoras()*FACTOR_HORA;
     }
 
-    @Override
+
+    public Revision(Revision revision) {
+        super(revision);
+
+    }
     public String toString() {
-        return (estaCerrado()) ? String.format("Revisión -> %s - %s (%s - %s): %s horas, %.2f € total", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA),getFechaFin().format(FORMATO_FECHA), getHoras(), getPrecio()) : String.format("Revisión -> %s - %s (%s - ): %s horas", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getHoras());
+        String cadena;
+        String fechaI = this.fechaInicio.format(FORMATO_FECHA);
+        String fechaF = (this.fechaFin != null) ? this.fechaFin.format(FORMATO_FECHA) :"";
+        if (!estaCerrado()){
+            cadena = String.format("Revisión -> %s - %s (%s - %s): %s horas", this.getCliente(), this.getVehiculo(), fechaI, fechaF, this.horas);
+        } else {
+            cadena = String.format("Revisión -> %s - %s (%s - %s): %s horas, %.2f € total", this.getCliente(), this.getVehiculo(), fechaI, fechaF, this.horas, getPrecio());
+        }
+        return cadena;
     }
 }
