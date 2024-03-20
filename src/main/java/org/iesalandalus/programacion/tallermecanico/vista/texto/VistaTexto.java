@@ -33,7 +33,6 @@ public class VistaTexto implements Vista {
         } while (aux != Evento.SALIR);
     }
 
-
     @Override
     public void terminar() {
         System.out.println("Proceso terminado; ¡Hasta la próxima!");
