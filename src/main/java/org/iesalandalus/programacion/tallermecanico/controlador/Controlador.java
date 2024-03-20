@@ -10,7 +10,6 @@ public class Controlador implements IControlador {
     private final Modelo modelo;
     private final Vista vista;
 
-
     public Controlador(Modelo modelo, Vista vista) {
         Objects.requireNonNull(modelo,"El modelo es nulo");
         Objects.requireNonNull(vista,"La vista es nulo");
@@ -18,6 +17,7 @@ public class Controlador implements IControlador {
         this.vista = vista;
         vista.getGestorEventos().suscribir(this, Evento.values());
     }
+
     @Override
     public void comenzar() {
         modelo.comenzar();
