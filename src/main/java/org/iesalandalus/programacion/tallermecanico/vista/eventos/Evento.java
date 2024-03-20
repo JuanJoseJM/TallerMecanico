@@ -32,11 +32,15 @@ public enum Evento {
             eventos.put(evento.codigo, evento);
         }
     }
+
     Evento(String texto, Integer codigo) {
         this.texto = texto;
         this.codigo = codigo;
     }
-    public static boolean esValida(int codigo) { return eventos.containsKey(codigo);}
+
+    public static boolean esValida(int codigo) {
+        return eventos.containsKey(codigo);
+    }
 
     public static Evento get(int codigo) {
         if (!esValida(codigo)) {

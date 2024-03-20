@@ -22,6 +22,7 @@ public class ModeloCascada implements Modelo {
     private IClientes clientes;
     private IVehiculos vehiculos;
     private ITrabajos trabajos;
+
     @Override
     public void comenzar() {
         clientes = fabricaFuenteDatos.crear().crearClientes();
@@ -151,7 +152,6 @@ public class ModeloCascada implements Modelo {
         for (Trabajo trabajo : trabajos.get(vehiculo)) {
             listaTrabajosIgualVehiculo.add(Trabajo.copiar(trabajo));
         }
-
         return listaTrabajosIgualVehiculo;
     }
 }

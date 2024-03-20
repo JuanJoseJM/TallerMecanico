@@ -14,31 +14,36 @@ public class Consola {
         String subrayado = String.format(String.format("%%0%dd", mensaje.length()), 0).replace('0', '-');
         System.out.println(subrayado);
     }
+
     public static void  mostrarMenu(){
         for (Evento opcion: Evento.values()) {
             System.out.println(opcion);
         }
     }
+
     public static Evento elegirOpcion(){
         int opcion = leerEntero("Dime la opcion que quieres elegir.");
         if(!Evento.esValida(opcion )){
             throw new IllegalArgumentException("La opcion no es válida");
         }
         return Evento.get(opcion);
-
     }
+
     public static float leerReal(String mensaje){
         System.out.println(mensaje);
         return Entrada.real();
     }
+
     public static int leerEntero(String mensaje){
         System.out.println(mensaje);
         return Entrada.entero();
     }
+
     public static String leerCadena(String mensaje){
         System.out.println(mensaje);
         return Entrada.cadena();
     }
+
     public static LocalDate leerFecha(String mensaje){
         System.out.println(mensaje);
         String fecha = Entrada.cadena();

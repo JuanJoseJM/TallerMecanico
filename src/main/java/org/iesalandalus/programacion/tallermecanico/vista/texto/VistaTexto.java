@@ -87,14 +87,12 @@ public class VistaTexto implements Vista {
     @Override
     public Trabajo leerRevision() {
         System.out.print("Dime una revisión");
-
         return new Revision(leerClieneDni(), leerMatriculaVehiculo(), Consola.leerFecha("Introduce la fecha de inicio"));
     }
 
     @Override
     public Trabajo leerMecanico() {
         System.out.print("Dime un trabajo mecánico ");
-
         return new Mecanico(leerClieneDni(), leerMatriculaVehiculo(), Consola.leerFecha("Introduce la fecha de inicio"));
     }
 
@@ -106,13 +104,11 @@ public class VistaTexto implements Vista {
 
     @Override
     public int leerHoras() {
-
         return Consola.leerEntero("Dime la cantidad de horas");
     }
 
     @Override
     public float leerPrecioMaterial() {
-
         return Consola.leerReal("Dime el precio material");
     }
 
