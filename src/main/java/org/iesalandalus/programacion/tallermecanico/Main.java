@@ -8,7 +8,7 @@ import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 import javax.naming.OperationNotSupportedException;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Modelo modelo = FabricaModelo.CASCADA.crear(FabricaFuenteDatos.MEMORIA);
         Vista vista = FabricaVista.TEXTO.crear();
 
