@@ -6,11 +6,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Consola {
-    private static final String  CADENA_FORMATO_FECHA= "\\d{2}/\\d/\\d{4}" ;
+    private static final String  CADENA_FORMATO_FECHA= "dd/MM/yyyy" ;
 
     public Consola(){}
     public static void mostrarCabecera(String mensaje){
-        System.out.println(mensaje);
+        System.out.printf("%n%s%n", mensaje);
         String subrayado = String.format(String.format("%%0%dd", mensaje.length()), 0).replace('0', '-');
         System.out.println(subrayado);
     }

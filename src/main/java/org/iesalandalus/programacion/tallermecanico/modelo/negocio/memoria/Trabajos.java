@@ -71,7 +71,6 @@ public class Trabajos implements ITrabajos {
         return trabajoAbierto;
     }
 
-
     @Override
     public void insertar(Trabajo trabajo)  {
         Objects.requireNonNull(trabajo, "No se puede insertar un trabajo nulo.");

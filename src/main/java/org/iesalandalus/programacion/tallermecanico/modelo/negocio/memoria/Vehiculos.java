@@ -17,7 +17,6 @@ public class Vehiculos implements IVehiculos {
 
     @Override
     public List<Vehiculo> get() {
-
         return new ArrayList<>(coleccionVehiculos);
     }
 
@@ -39,7 +38,6 @@ public class Vehiculos implements IVehiculos {
             vehiculoComprobar = coleccionVehiculos.get(indice);
         }
         return vehiculoComprobar;
-
     }
 
     @Override
@@ -50,5 +48,4 @@ public class Vehiculos implements IVehiculos {
         }
         coleccionVehiculos.remove(vehiculo);
     }
-
 }

@@ -23,6 +23,7 @@ public class ModeloCascada implements Modelo {
     private IVehiculos vehiculos;
     private ITrabajos trabajos;
 
+
     @Override
     public void comenzar() {
         clientes = fabricaFuenteDatos.crear().crearClientes();
