@@ -1,9 +1,6 @@
 package org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria;
 
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Mecanico;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Trabajo;
-import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
+import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
 
 import javax.naming.OperationNotSupportedException;
@@ -15,6 +12,23 @@ public class Trabajos implements ITrabajos {
 
     public Trabajos() {
         coleccionTrabajos = new ArrayList<>();
+    }
+
+    public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
+        Map<TipoTrabajo, Integer> estadisticas = inicializarEstadisticas();
+        for (Trabajo t : coleccionTrabajos) {
+            TipoTrabajo tipo = TipoTrabajo.get(t);
+            Integer i = estadisticas.get(tipo);
+            estadisticas.put(tipo, i + 1);
+        }
+        return estadisticas;
+    }
+
+    private Map<TipoTrabajo, Integer> inicializarEstadisticas() {
+        Map<TipoTrabajo, Integer> mapa = new TreeMap<>();
+        mapa.put(TipoTrabajo.MECANICO, 0);
+        mapa.put(TipoTrabajo.REVISION, 0);
+        return mapa;
     }
 
     @Override

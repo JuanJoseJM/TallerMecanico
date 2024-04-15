@@ -11,6 +11,7 @@ import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ModeloCascada implements Modelo {
@@ -154,5 +155,9 @@ public class ModeloCascada implements Modelo {
             listaTrabajosIgualVehiculo.add(Trabajo.copiar(trabajo));
         }
         return listaTrabajosIgualVehiculo;
+    }
+
+    public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
+        return trabajos.getEstadisticasMensuales(mes);
     }
 }
