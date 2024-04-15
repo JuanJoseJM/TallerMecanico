@@ -14,9 +14,9 @@ public class Clientes implements IClientes {
         coleccionClientes = new ArrayList<>();
     }
     public List<Cliente> get(){
-
         return new ArrayList<>(coleccionClientes);
     }
+
     @Override
     public void insertar(Cliente cliente) throws OperationNotSupportedException {
         Objects.requireNonNull(cliente,"No se puede insertar un cliente nulo.");
@@ -25,6 +25,7 @@ public class Clientes implements IClientes {
         }
         coleccionClientes.add(cliente);
     }
+
     @Override
     public Cliente buscar(Cliente cliente){
         Objects.requireNonNull(cliente,"No se puede buscar un cliente nulo.");
@@ -35,6 +36,7 @@ public class Clientes implements IClientes {
         }
         return  clienteComprobar;
     }
+
     @Override
     public boolean modificar(Cliente cliente, String nombre, String telefono) throws OperationNotSupportedException {
         Objects.requireNonNull(cliente,"No se puede modificar un cliente nulo.");
@@ -54,6 +56,7 @@ public class Clientes implements IClientes {
         coleccionClientes.set(indice,cliente);
         return modificado;
     }
+
     @Override
     public void borrar(Cliente cliente) throws OperationNotSupportedException {
         Objects.requireNonNull(cliente,"No se puede borrar un cliente nulo.");
