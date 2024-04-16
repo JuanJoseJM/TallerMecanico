@@ -9,10 +9,8 @@ import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Fabri
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ModeloCascada implements Modelo {
     private final FabricaFuenteDatos fabricaFuenteDatos;
@@ -119,25 +117,25 @@ public class ModeloCascada implements Modelo {
 
     @Override
     public  List<Cliente> getClientes() {
-        ArrayList<Cliente> listaClientes = new ArrayList<>();
+        List<Cliente> copiaClientes = new ArrayList<>();
         for (Cliente cliente : clientes.get()) {
-            listaClientes.add(new Cliente(cliente));
+            copiaClientes.add(new Cliente(cliente));
         }
-        return listaClientes;
+        return copiaClientes.stream().sorted(Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni)).collect(Collectors.toList());
     }
 
     @Override
     public  List<Vehiculo> getVehiculos() {
-        return new ArrayList<>(vehiculos.get());
+        return vehiculos.get().stream().sorted(Comparator.comparing(Vehiculo::marca).thenComparing(Vehiculo::modelo).thenComparing(Vehiculo::matricula)).collect(Collectors.toList());
     }
 
     @Override
     public  List<Trabajo> getTrabajos() {
-        ArrayList<Trabajo> listaTrabajos = new ArrayList<>();
+        ArrayList<Trabajo> copiaTrabajos = new ArrayList<>();
         for (Trabajo trabajo : trabajos.get()) {
-            listaTrabajos.add(Trabajo.copiar(trabajo));
+            copiaTrabajos.add(Trabajo.copiar(trabajo));
         }
-        return listaTrabajos;
+        return copiaTrabajos.stream().sorted(Comparator.comparing(Trabajo::getFechaInicio).thenComparing(trabajo -> trabajo.getCliente().getNombre()).thenComparing(trabajo -> trabajo.getCliente().getDni())).collect(Collectors.toList());
     }
 
     @Override
