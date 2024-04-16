@@ -8,6 +8,7 @@ import org.iesalandalus.programacion.utilidades.Entrada;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class VistaTexto implements Vista {
     private final GestorEventos gestorEventos = new GestorEventos(Evento.values());
@@ -153,6 +154,21 @@ public class VistaTexto implements Vista {
     public void mostrarTrabajos(List<Trabajo> trabajos) {
         for (Trabajo trabajo : trabajos) {
             System.out.println(trabajo);
+        }
+    }
+
+    @Override
+    public LocalDate leerMes(){
+        int mes = Consola.leerEntero("Introduzca el mes");
+        int ano = Consola.leerEntero("Introduzca el año");
+        //LocalDate.of(2021, 1, 1)
+        return LocalDate.of(ano, mes, 1);
+    }
+
+    public void mostrarEstadisticasMensales(Map<TipoTrabajo, Integer> estadisticas) {
+        System.out.println("Estadísticas Mensuales");
+        for (Map.Entry<TipoTrabajo, Integer> it : estadisticas.entrySet()) {
+            System.out.println(it.getKey() + " -> " + it.getValue());
         }
     }
 }

@@ -2,7 +2,6 @@ package org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
-
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.util.*;
@@ -16,10 +15,16 @@ public class Trabajos implements ITrabajos {
 
     public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
         Map<TipoTrabajo, Integer> estadisticas = inicializarEstadisticas();
+        int year = mes.getYear();
+        int month = mes.getMonthValue();
         for (Trabajo t : coleccionTrabajos) {
-            TipoTrabajo tipo = TipoTrabajo.get(t);
-            Integer i = estadisticas.get(tipo);
-            estadisticas.put(tipo, i + 1);
+            int tyear = t.getFechaInicio().getYear();
+            int tmonth = t.getFechaInicio().getMonthValue();
+            if (year == tyear && month == tmonth ) {
+                TipoTrabajo tipo = TipoTrabajo.get(t);
+                Integer i = estadisticas.get(tipo);
+                estadisticas.put(tipo, i + 1);
+            }
         }
         return estadisticas;
     }
@@ -75,6 +80,7 @@ public class Trabajos implements ITrabajos {
             }
         }
     }
+
     private Trabajo getTrabajoAbierto(Vehiculo vehiculo){
         Trabajo trabajoAbierto = null;
         for (Trabajo trabajo : coleccionTrabajos){
@@ -98,10 +104,8 @@ public class Trabajos implements ITrabajos {
         } catch (OperationNotSupportedException e) {
             throw new RuntimeException(e);
         }
-
         coleccionTrabajos.add(trabajo);
     }
-
 
     @Override
     public void anadirHoras(Trabajo trabajo, int horas)  {
@@ -144,7 +148,6 @@ public class Trabajos implements ITrabajos {
         if (trabajo instanceof Mecanico mecanico){
             mecanico.anadirPrecioMaterial(precioMaterial);
         } else {
-
             try {
                 throw new OperationNotSupportedException("No se puede añadir precio al material para este tipo de trabajos.");
             } catch (OperationNotSupportedException e) {
@@ -175,7 +178,6 @@ public class Trabajos implements ITrabajos {
         Trabajo aux = null;
         if (indice != -1) {
             aux = coleccionTrabajos.get(indice);
-
         }
         return aux;
     }
@@ -183,7 +185,6 @@ public class Trabajos implements ITrabajos {
     @Override
     public void borrar(Trabajo trabajo)  {
         Objects.requireNonNull(trabajo, "No se puede borrar un trabajo nulo.");
-
         int indice = coleccionTrabajos.indexOf(trabajo);
 
         if (indice == -1) {

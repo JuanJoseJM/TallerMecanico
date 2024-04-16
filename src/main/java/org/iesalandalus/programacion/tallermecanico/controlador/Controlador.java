@@ -72,6 +72,7 @@ public class Controlador implements IControlador {
                 case LISTAR_TRABAJOS -> vista.mostrarTrabajos(modelo.getTrabajos());
                 case LISTAR_TRABAJOS_CLIENTES -> vista.mostrarTrabajos(modelo.getTrabajos(vista.leerClieneDni()));
                 case LISTAR_TRABAJOS_VEHICULOS -> vista.mostrarTrabajos(modelo.getTrabajos(vista.leerMatriculaVehiculo()));
+                case MOSTRAR_ESTADISTICAS_MENSUALES -> vista.mostrarEstadisticasMensales(modelo.getEstadisticasMensales(vista.leerMes()));
                 case SALIR -> terminar();
             }
             if (!resultado.isBlank()){

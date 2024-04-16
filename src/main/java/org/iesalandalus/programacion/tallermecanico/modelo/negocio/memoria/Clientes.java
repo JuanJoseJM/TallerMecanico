@@ -13,6 +13,7 @@ public class Clientes implements IClientes {
     public Clientes() {
         coleccionClientes = new ArrayList<>();
     }
+
     public List<Cliente> get(){
         return new ArrayList<>(coleccionClientes);
     }
@@ -43,8 +44,10 @@ public class Clientes implements IClientes {
         if (buscar(cliente)== null){
             throw new OperationNotSupportedException("No existe ningún cliente con ese DNI.");
         }
+
         boolean  modificado = false;
         int indice = coleccionClientes.indexOf(cliente);
+
         if ( telefono!= null && !telefono.isBlank()){
             cliente.setTelefono(telefono);
             modificado = true;

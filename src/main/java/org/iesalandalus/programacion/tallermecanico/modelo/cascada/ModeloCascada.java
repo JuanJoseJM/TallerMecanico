@@ -149,15 +149,17 @@ public class ModeloCascada implements Modelo {
 
         return listaTrabajosIgualCliente;
     }
+
+    @Override
     public  List<Trabajo> getTrabajos(Vehiculo vehiculo) {
-        ArrayList<Trabajo> listaTrabajosIgualVehiculo = new ArrayList<>();
+        ArrayList<Trabajo> trabajosCliente = new ArrayList<>();
         for (Trabajo trabajo : trabajos.get(vehiculo)) {
-            listaTrabajosIgualVehiculo.add(Trabajo.copiar(trabajo));
+            trabajosCliente.add(Trabajo.copiar(trabajo));
         }
-        return listaTrabajosIgualVehiculo;
+        return trabajosCliente;
     }
 
-    public Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes) {
+    public Map<TipoTrabajo, Integer> getEstadisticasMensales(LocalDate mes) {
         return trabajos.getEstadisticasMensuales(mes);
     }
 }
