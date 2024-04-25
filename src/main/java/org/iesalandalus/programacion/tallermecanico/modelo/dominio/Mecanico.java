@@ -2,74 +2,47 @@ package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 public class Mecanico extends Trabajo {
-    static final float FACTOR_HORA = 30.0f;
-    static final float FACTOR_MATERIAL = 1.5f;
-    static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    float precioMaterial;
+    private static final float FACTOR_HORA = 30F;
+    private static final float FACTOR_PRECIO_MATERIAL = 1.5F;
+
+    protected float precioMaterial;
 
     public Mecanico(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
-        super(fechaInicio, vehiculo, cliente);
+        super(cliente, vehiculo, fechaInicio);
     }
 
     public Mecanico(Mecanico mecanico) {
         super(mecanico);
-        this.precioMaterial = mecanico.getPrecioMaterial();
+        this.precioMaterial = mecanico.precioMaterial;
     }
-
 
     public float getPrecioMaterial() {
         return precioMaterial;
     }
 
-    public void anadirPrecioMaterial(float precioMaterial) {
+    public void anadirPrecioMaterial(float precioMaterial) throws OperationNotSupportedException {
         if (estaCerrado()) {
-            try {
-                throw new OperationNotSupportedException("No se puede añadir precio del material, ya que el trabajo mecánico está cerrado.");
-            } catch (OperationNotSupportedException e) {
-                throw new RuntimeException(e);
-            }
+            throw new OperationNotSupportedException("No se puede añadir precio del material, ya que el trabajo mecánico está cerrado.");
         }
-
         if (precioMaterial <= 0) {
             throw new IllegalArgumentException("El precio del material a añadir debe ser mayor que cero.");
         }
-
         this.precioMaterial += precioMaterial;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Mecanico mecanico)) return false;
-        if (!super.equals(o)) return false;
-        return Float.compare(precioMaterial, mecanico.precioMaterial) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), precioMaterial);
-    }
-
-    @Override
     public float getPrecioEspecifico() {
-        return getHoras()*FACTOR_HORA + precioMaterial*FACTOR_MATERIAL;
+        return (horas * FACTOR_HORA) + (precioMaterial * FACTOR_PRECIO_MATERIAL);
     }
 
     @Override
     public String toString() {
-        String cadena;
-        String fechaI = this.fechaInicio.format(FORMATO_FECHA);
-        String fechaF = (this.fechaFin != null) ? this.fechaFin.format(FORMATO_FECHA) :"";
-        if (!estaCerrado()){
-            cadena = String.format("Mecánico -> %s - %s (%s - %s): %s horas, %.2f € en material", this.getCliente(), this.getVehiculo(), fechaI, fechaF, this.horas, this.precioMaterial);
+        if (estaCerrado()) {
+            return String.format("Mecánico -> %s - %s (%s - %s): %s horas, %.2f € en material, %.2f € total", this.cliente, this.vehiculo, this.fechaInicio.format(FORMATO_FECHA), this.fechaFin.format(FORMATO_FECHA), this.horas, this.precioMaterial, getPrecio());
         } else {
-            cadena = String.format("Mecánico -> %s - %s (%s - %s): %s horas, %.2f € en material, %.2f € total", this.getCliente(), this.getVehiculo(), fechaI, fechaF, this.horas, this.precioMaterial, getPrecio());
+            return String.format("Mecánico -> %s - %s (%s - ): %s horas, %.2f € en material", this.cliente, this.vehiculo, this.fechaInicio.format(FORMATO_FECHA), this.horas, this.precioMaterial);
         }
-        return cadena;
     }
 }

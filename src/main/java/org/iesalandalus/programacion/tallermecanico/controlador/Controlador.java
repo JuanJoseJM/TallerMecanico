@@ -4,18 +4,19 @@ import org.iesalandalus.programacion.tallermecanico.modelo.Modelo;
 import org.iesalandalus.programacion.tallermecanico.vista.Vista;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.Objects;
 
 public class Controlador implements IControlador {
-    private final Modelo modelo;
     private final Vista vista;
+    private final Modelo modelo;
 
     public Controlador(Modelo modelo, Vista vista) {
-        Objects.requireNonNull(modelo,"El modelo es nulo");
-        Objects.requireNonNull(vista,"La vista es nulo");
+        Objects.requireNonNull(modelo, "El modelo no puede ser nulo.");
+        Objects.requireNonNull(vista, "La vista no puede ser nula.");
         this.modelo = modelo;
         this.vista = vista;
-        vista.getGestorEventos().suscribir(this, Evento.values());
+        this.vista.getGestorEventos().suscribir(this, Evento.values());
     }
 
     @Override
@@ -29,58 +30,82 @@ public class Controlador implements IControlador {
         modelo.terminar();
         vista.terminar();
     }
-    @Override
-    public void actualizarEvento(Evento evento){
-        try {
-            String resultado = "";
-            switch (evento){
-                case INSERTAR_CLIENTE ->{ modelo.insertar(vista.leerCliente()); resultado = "Cliente insertado correctamente." ;}
-                case INSERTAR_MECANICO -> { modelo.insertar(vista.leerMecanico()); resultado = "Trabajo de mecánico insertado correctamente." ;}
-                case INSERTAR_REVISION -> {modelo.insertar(vista.leerRevision()); resultado = "Trabajo de revisión insertado correctamente." ;}
-                case INSERTAR_VEHICULO -> { modelo.insertar(vista.leerVehiculo()); resultado = "Vehiculo insertado correctamente. ";}
-                case BUSCAR_CLIENTE ->  vista.mostrarCliente(modelo.buscar(vista.leerClieneDni()));
-                case BUSCAR_VEHICULO -> vista.mostrarVehiculos(modelo.buscar(vista.leerMatriculaVehiculo()));
-                case BUSCAR_TRABAJO -> vista.mostrarTrabajo(modelo.buscar(vista.leerRevision()));
-                case MODIFICAR_CLIENTE -> resultado = (modelo.modificar(vista.leerClieneDni(),vista.leerNuevoNombre(),vista.leerNuevoTelefono())) ? "EL cliente ha sido modificado correctamente.": "EL cliente no ha sido modificado correctamente." ;
 
-                case ANADIR_PRECIO_MATERIAL_TRABAJO -> {
-                    modelo.anadirPrecioMaterial(vista.leerMecanico(), vista.leerPrecioMaterial());
-                    resultado = "Precio añadido correctamente.";
+    @Override
+    public void actualizar(Evento evento) {
+        Objects.requireNonNull(evento, "El evento no puede ser nulo.");
+        String resultado = "";
+        boolean exito = false;
+        try {
+            switch (evento) {
+                case INSERTAR_CLIENTE -> {
+                    modelo.insertar(vista.leerCliente());
+                    resultado = "Se ha insertado el cliente correctamente.";
                 }
-                case ANADIR_HORAS_TRABAJO -> {
-                    modelo.anadirHoras(vista.leerTrabajoVehiculo(), vista.leerHoras());
-                    resultado = "Horas añadidas correctamente.";
-                }
-                case CERRAR_TRABAJO -> {
-                    modelo.cerrar(vista.leerTrabajoVehiculo(),vista.leerFechaCierre());
-                    resultado = "Trabajo cerrado correctamente.";
-                }
+                case BUSCAR_CLIENTE -> vista.mostrarCliente(modelo.buscar(vista.leerClienteDni()));
                 case BORRAR_CLIENTE -> {
-                    modelo.borrar(vista.leerClieneDni());
-                    resultado  = "Cliente borrado correctamente";
-                }
-                case BORRAR_TRABAJO ->{
-                    modelo.borrar(vista.leerRevision());
-                    resultado  = "Trabajo borrado correctamente";
-                }
-                case BORRAR_VEHICULO -> {
-                    modelo.borrar(vista.leerVehiculo());
-                    resultado = "Vehiculo borrado correctamente.";
+                    modelo.borrar(vista.leerClienteDni());
+                    resultado = "Se ha borrado el cliente.";
                 }
                 case LISTAR_CLIENTES -> vista.mostrarClientes(modelo.getClientes());
+
+                case MODIFICAR_CLIENTE -> {
+                    boolean modificado = modelo.modificar(vista.leerClienteDni(), vista.leerNuevoNombre(), vista.leerNuevoTelefono());
+                    if (modificado) {
+                        resultado = "Se ha modificado el cliente.";
+                    } else {
+                        resultado = "El cliente no se ha modificado.";
+                    }
+                }
+                case INSERTAR_VEHICULO -> {
+                    modelo.insertar(vista.leerVehiculo());
+                    resultado = "Se ha insertado el vehículo correctamente.";
+                }
+                case BUSCAR_VEHICULO -> vista.mostrarVehiculo(modelo.buscar(vista.leerVehiculoMatricula()));
+                case BORRAR_VEHICULO -> {
+                    modelo.borrar(vista.leerVehiculoMatricula());
+                    resultado = "Se ha borrado el vehiculo.";
+                }
                 case LISTAR_VEHICULOS -> vista.mostrarVehiculos(modelo.getVehiculos());
+
+                case INSERTAR_REVISION -> {
+                    modelo.insertar(vista.leerRevision());
+                    resultado = "Se ha insertado la revisión correctamente.";
+                }
+                case INSERTAR_MECANICO -> {
+                    modelo.insertar(vista.leerMecanico());
+                    resultado = "Se ha insertado el trabajo mecánico correctamente.";
+                }
+                case BUSCAR_TRABAJO -> vista.mostrarTrabajo(modelo.buscar(vista.leerRevision()));
+                case BORRAR_TRABAJO -> {
+                    modelo.borrar(modelo.buscar(vista.leerRevision()));
+                    resultado = "Se ha borrado el trabajo.";
+                }
                 case LISTAR_TRABAJOS -> vista.mostrarTrabajos(modelo.getTrabajos());
-                case LISTAR_TRABAJOS_CLIENTES -> vista.mostrarTrabajos(modelo.getTrabajos(vista.leerClieneDni()));
-                case LISTAR_TRABAJOS_VEHICULOS -> vista.mostrarTrabajos(modelo.getTrabajos(vista.leerMatriculaVehiculo()));
-                case MOSTRAR_ESTADISTICAS_MENSUALES -> vista.mostrarEstadisticasMensales(modelo.getEstadisticasMensales(vista.leerMes()));
+
+                case LISTAR_TRABAJOS_CLIENTE -> vista.mostrarTrabajos(modelo.getTrabajos(vista.leerClienteDni()));
+
+                case LISTAR_TRABAJOS_VEHICULO -> vista.mostrarTrabajos(modelo.getTrabajos(vista.leerVehiculoMatricula()));
+
+                case ANADIR_HORAS_TRABAJO -> {
+                    modelo.anadirHoras((vista.leerTrabajoVehiculo()), vista.leerHoras());
+                    resultado = "Se han añadido las horas al trabajo.";
+                }
+                case ANADIR_PRECIO_MATERIAL_TRABAJO -> {
+                    modelo.anadirPrecioMaterial((vista.leerTrabajoVehiculo()), vista.leerPrecioMaterial());
+                    resultado = "Se ha añadido el precio material al trabajo.";
+                }
+                case CERRAR_TRABAJO -> {
+                    modelo.cerrar((vista.leerTrabajoVehiculo()), vista.leerFechaCierre());
+                    resultado = "Se ha cerrado el trabajo correctamente.";
+                }
+                case MOSTRAR_ESTADISTICAS_MENSUALES -> vista.mostrarEstadisticasMensuales(modelo.getEstadisticasMensuales(vista.leerMes()));
                 case SALIR -> terminar();
             }
-            if (!resultado.isBlank()){
-                vista.notificarEvento(evento, resultado, true);
-            }
-        } catch (Exception e) {
-            vista.notificarEvento(evento, e.getMessage(), true);
+            exito = true;
+        } catch (OperationNotSupportedException | IllegalArgumentException | NullPointerException e) {
+            resultado = e.getMessage();
         }
+        vista.notificarResultado(evento,resultado,exito);
     }
 }
-

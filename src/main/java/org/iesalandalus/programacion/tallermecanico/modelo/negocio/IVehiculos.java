@@ -4,7 +4,11 @@ import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
-public interface IVehiculos{
+public interface IVehiculos {
+    void comenzar();
+
+    void terminar();
+
     List<Vehiculo> get();
 
     void insertar(Vehiculo vehiculo) throws OperationNotSupportedException;

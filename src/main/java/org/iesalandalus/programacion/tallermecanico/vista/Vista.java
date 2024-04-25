@@ -7,13 +7,12 @@ import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
 
+import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 public interface Vista {
-    LocalDate leerFechaCierre();
-
     GestorEventos getGestorEventos();
 
     void comenzar();
@@ -22,7 +21,7 @@ public interface Vista {
 
     Cliente leerCliente();
 
-    Cliente leerClieneDni();
+    Cliente leerClienteDni();
 
     String leerNuevoNombre();
 
@@ -30,22 +29,26 @@ public interface Vista {
 
     Vehiculo leerVehiculo();
 
-    Vehiculo leerMatriculaVehiculo();
+    Vehiculo leerVehiculoMatricula();
 
     Trabajo leerRevision();
 
     Trabajo leerMecanico();
+
     Trabajo leerTrabajoVehiculo();
 
-    int leerHoras();
+    int leerHoras() throws OperationNotSupportedException;
 
-    float leerPrecioMaterial();
+    float leerPrecioMaterial() throws OperationNotSupportedException;
 
-    void notificarEvento(Evento evento, String texto, boolean existo);
+    LocalDate leerFechaCierre() throws OperationNotSupportedException;
+    LocalDate leerMes();
+
+    void notificarResultado(Evento evento, String texto, boolean exito);
 
     void mostrarCliente(Cliente cliente);
 
-    void mostrarVehiculos(Vehiculo vehiculo);
+    void mostrarVehiculo(Vehiculo vehiculo);
 
     void mostrarTrabajo(Trabajo trabajo);
 
@@ -55,7 +58,5 @@ public interface Vista {
 
     void mostrarTrabajos(List<Trabajo> trabajos);
 
-    LocalDate leerMes();
-
-    void mostrarEstadisticasMensales(Map<TipoTrabajo, Integer> estadisticas);
+    void mostrarEstadisticasMensuales(Map<TipoTrabajo, Integer> estadisticas);
 }

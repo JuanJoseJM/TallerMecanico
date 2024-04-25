@@ -4,7 +4,7 @@ public interface IFuenteDatos {
 
     IClientes crearClientes();
 
-    IVehiculos crearVehiculo();
+    IVehiculos crearVehiculos();
 
-    ITrabajos crearTrabajo();
+    ITrabajos crearTrabajos();
 }

@@ -4,9 +4,8 @@ import java.util.Objects;
 
 public record Vehiculo(String marca, String modelo, String matricula) {
 
-    private static final String ER_MARCA = "[A-Z]+[a-z]*([ -]?[A-Z][a-z]+)*";
-
-    private static final String ER_MATRICULA = "^\\d{4}[BCDFGHJKLMNPRSTVWXYZ]{3}";
+    private static final String ER_MARCA = "(?:(?:[A-Z][a-záéíóúñ]+[ -]?)|(?:[A-Z]+))+";
+    private static final String ER_MATRICULA = "\\d{4}[^\\WAEIOU_\\da-z]{3}";
 
     public Vehiculo {
         validarMarca(marca);
@@ -14,11 +13,10 @@ public record Vehiculo(String marca, String modelo, String matricula) {
         validarMatricula(matricula);
     }
 
-    private void validarMarca(String marca) {
-        Objects.requireNonNull(marca, "La marca no puede ser nula.");
-
-        if (!marca.matches(ER_MARCA)) {
-            throw new IllegalArgumentException("La marca no tiene un formato válido.");
+    private void validarMatricula(String matricula) {
+        Objects.requireNonNull(matricula, "La matrícula no puede ser nula.");
+        if (!matricula.matches(ER_MATRICULA)){
+            throw new IllegalArgumentException("La matrícula no tiene un formato válido.");
         }
     }
 
@@ -29,15 +27,15 @@ public record Vehiculo(String marca, String modelo, String matricula) {
         }
     }
 
-    private void validarMatricula(String matricula) {
-        Objects.requireNonNull(matricula, "La matrícula no puede ser nula.");
-        if (!matricula.matches(ER_MATRICULA)) {
-            throw new IllegalArgumentException("La matrícula no tiene un formato válido.");
+    private void validarMarca(String marca) {
+        Objects.requireNonNull(marca, "La marca no puede ser nula.");
+        if (!marca.matches(ER_MARCA)){
+            throw new IllegalArgumentException("La marca no tiene un formato válido.");
         }
     }
 
     public static Vehiculo get(String matricula) {
-        return new Vehiculo("Renault", "Megane", matricula);
+        return new Vehiculo("Marca Defecto","Modelo Defecto", matricula);
     }
 
     @Override
@@ -45,12 +43,12 @@ public record Vehiculo(String marca, String modelo, String matricula) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehiculo vehiculo = (Vehiculo) o;
-        return Objects.equals(marca, vehiculo.marca) && Objects.equals(modelo, vehiculo.modelo) && Objects.equals(matricula, vehiculo.matricula);
+        return Objects.equals(matricula, vehiculo.matricula);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(marca, modelo, matricula);
+        return Objects.hash(matricula);
     }
 
     @Override

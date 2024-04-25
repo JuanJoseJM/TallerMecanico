@@ -18,6 +18,7 @@ public interface Modelo {
     void insertar(Cliente cliente) throws OperationNotSupportedException;
 
     void insertar(Vehiculo vehiculo) throws OperationNotSupportedException;
+
     void insertar(Trabajo trabajo) throws OperationNotSupportedException;
 
     Cliente buscar(Cliente cliente);
@@ -50,5 +51,5 @@ public interface Modelo {
 
     List<Trabajo> getTrabajos(Vehiculo vehiculo);
 
-    Map<TipoTrabajo, Integer> getEstadisticasMensales(LocalDate mes);
+    Map<TipoTrabajo, Integer> getEstadisticasMensuales(LocalDate mes);
 }

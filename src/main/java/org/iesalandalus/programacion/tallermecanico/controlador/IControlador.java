@@ -5,9 +5,8 @@ import org.iesalandalus.programacion.tallermecanico.vista.eventos.ReceptorEvento
 import javax.naming.OperationNotSupportedException;
 
 public interface IControlador extends ReceptorEventos {
-    void comenzar() throws OperationNotSupportedException;
-
+    void comenzar();
     void terminar();
-
-    void actualizarEvento(Evento evento);
+    @Override
+    void actualizar(Evento evento);
 }

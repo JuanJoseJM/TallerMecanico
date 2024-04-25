@@ -1,21 +1,23 @@
-package org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria;
+package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IClientes;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IFuenteDatos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
 
-public class FuenteDatosMemoria implements IFuenteDatos {
+public class FuenteDatosFicheros implements IFuenteDatos {
     @Override
     public IClientes crearClientes(){
-        return new Clientes();
+        return Clientes.getInstancia();
     }
+
     @Override
-    public IVehiculos crearVehiculo(){
-        return new Vehiculos();
+    public IVehiculos crearVehiculos(){
+        return Vehiculos.getInstancia();
     }
+
     @Override
-    public ITrabajos crearTrabajo(){
-        return new Trabajos();
+    public ITrabajos crearTrabajos(){
+        return Trabajos.getInstancia();
     }
 }
