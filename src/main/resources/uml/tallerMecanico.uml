@@ -1061,7 +1061,7 @@
 </body>
                       </ownedBehavior>
                       <ownedOperation xmi:type="uml:Operation" xmi:id="_YEvCcfcMEe6mB9ZpyjDJKg" name="Clientes" visibility="private" method="_YE1JEPcMEe6mB9ZpyjDJKg"/>
-                      <ownedOperation xmi:type="uml:Operation" xmi:id="_YE2XMPcMEe6mB9ZpyjDJKg" name="getInstancia" visibility="private" isStatic="true" method="_YE2-QPcMEe6mB9ZpyjDJKg">
+                      <ownedOperation xmi:type="uml:Operation" xmi:id="_YE2XMPcMEe6mB9ZpyjDJKg" name="getInstancia" visibility="package" isStatic="true" method="_YE2-QPcMEe6mB9ZpyjDJKg">
                         <ownedParameter xmi:type="uml:Parameter" xmi:id="_YE2XMfcMEe6mB9ZpyjDJKg" type="_YEi1MPcMEe6mB9ZpyjDJKg" direction="return"/>
                       </ownedOperation>
                       <ownedOperation xmi:type="uml:Operation" xmi:id="_YE2-QfcMEe6mB9ZpyjDJKg" name="comenzar" visibility="public" method="_YE2-QvcMEe6mB9ZpyjDJKg"/>
@@ -1588,7 +1588,7 @@
 </body>
                       </ownedBehavior>
                       <ownedOperation xmi:type="uml:Operation" xmi:id="_6Xf-sfclEe6VQd-piZBu4w" name="Trabajos" visibility="private" method="_6XkQIPclEe6VQd-piZBu4w"/>
-                      <ownedOperation xmi:type="uml:Operation" xmi:id="_6XleQPclEe6VQd-piZBu4w" name="getInstancia" visibility="private" isStatic="true" method="_6XmFUPclEe6VQd-piZBu4w">
+                      <ownedOperation xmi:type="uml:Operation" xmi:id="_6XleQPclEe6VQd-piZBu4w" name="getInstancia" visibility="package" isStatic="true" method="_6XmFUPclEe6VQd-piZBu4w">
                         <ownedParameter xmi:type="uml:Parameter" xmi:id="_6XleQfclEe6VQd-piZBu4w" type="_6XCEoPclEe6VQd-piZBu4w" direction="return"/>
                       </ownedOperation>
                       <ownedOperation xmi:type="uml:Operation" xmi:id="_6XmsYPclEe6VQd-piZBu4w" name="comenzar" visibility="public" method="_6XnTcPclEe6VQd-piZBu4w"/>
@@ -1919,7 +1919,7 @@
 </body>
                       </ownedBehavior>
                       <ownedOperation xmi:type="uml:Operation" xmi:id="_MKozsPcnEe6VQd-piZBu4w" name="Vehiculos" visibility="private" method="_MKrP8PcnEe6VQd-piZBu4w"/>
-                      <ownedOperation xmi:type="uml:Operation" xmi:id="_MKr3APcnEe6VQd-piZBu4w" name="getInstancia" visibility="private" isStatic="true" method="_MKseEfcnEe6VQd-piZBu4w">
+                      <ownedOperation xmi:type="uml:Operation" xmi:id="_MKr3APcnEe6VQd-piZBu4w" name="getInstancia" visibility="package" isStatic="true" method="_MKseEfcnEe6VQd-piZBu4w">
                         <ownedParameter xmi:type="uml:Parameter" xmi:id="_MKseEPcnEe6VQd-piZBu4w" type="_MKdNgPcnEe6VQd-piZBu4w" direction="return"/>
                       </ownedOperation>
                       <ownedOperation xmi:type="uml:Operation" xmi:id="_MKtFIPcnEe6VQd-piZBu4w" name="comenzar" visibility="public" method="_MKtsMPcnEe6VQd-piZBu4w"/>
@@ -3802,8 +3802,9 @@
       </packagedElement>
       <packagedElement xmi:type="uml:Package" xmi:id="_Dxq6gMWLEe65drXdt8xEJQ" name="dominio">
         <ownedComment xmi:type="uml:Comment" xmi:id="_qJ0OIPcwEe6VQd-piZBu4w" annotatedElement="_S_wxEPcqEe6VQd-piZBu4w">
-          <body>-------------------------
-+ TipoTrabajo(nombre: String)
+          <body>- nombre: String
+-------------------------
+- TipoTrabajo(nombre: String)
 + &lt;&lt;static>> get(trabajo: Trabajo): TipoTrabajo</body>
         </ownedComment>
       </packagedElement>
