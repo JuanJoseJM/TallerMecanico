@@ -1,14 +1,16 @@
 package org.iesalandalus.programacion.tallermecanico.modelo.negocio;
 
-
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
 public interface IClientes {
+
     void comenzar();
+
     void terminar();
+
     List<Cliente> get();
 
     void insertar(Cliente cliente) throws OperationNotSupportedException;

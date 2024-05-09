@@ -9,35 +9,40 @@ import java.util.Objects;
 public abstract class Trabajo {
     static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final float FACTOR_DIA = 10F;
-    protected Cliente cliente;
-    protected Vehiculo vehiculo;
-    protected LocalDate fechaInicio;
-    protected LocalDate fechaFin;
-    protected int horas;
+
+    private Cliente cliente;
+    private Vehiculo vehiculo;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private int horas;
+
 
     protected Trabajo(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
         setCliente(cliente);
         setVehiculo(vehiculo);
         setFechaInicio(fechaInicio);
+        fechaFin = null;
+        horas = 0;
     }
 
-    protected Trabajo(Trabajo trabajo){
+    protected Trabajo(Trabajo trabajo) {
         Objects.requireNonNull(trabajo, "El trabajo no puede ser nulo.");
-        this.cliente = new Cliente(trabajo.getCliente());
-        this.vehiculo = trabajo.vehiculo;
-        this.fechaInicio = trabajo.fechaInicio;
-        this.fechaFin = trabajo.fechaFin;
-        this.horas = trabajo.horas;
+        cliente = new Cliente(trabajo.cliente);
+        vehiculo = trabajo.vehiculo;
+        fechaInicio = trabajo.fechaInicio;
+        fechaFin = trabajo.fechaFin;
+        horas = trabajo.horas;
     }
 
-    public static Trabajo copiar(Trabajo trabajo){
+    public static Trabajo copiar(Trabajo trabajo) {
         Objects.requireNonNull(trabajo, "El trabajo no puede ser nulo.");
+        Trabajo trabajoCopiado = null;
         if (trabajo instanceof Revision revision) {
-            trabajo = new Revision(revision);
+            trabajoCopiado = new Revision(revision);
         } else if (trabajo instanceof Mecanico mecanico) {
-            trabajo = new Mecanico(mecanico);
+            trabajoCopiado = new Mecanico(mecanico);
         }
-        return trabajo;
+        return trabajoCopiado;
     }
 
     public static Trabajo get(Vehiculo vehiculo) {
@@ -49,7 +54,7 @@ public abstract class Trabajo {
         return cliente;
     }
 
-    protected void setCliente(Cliente cliente) {
+    private void setCliente(Cliente cliente) {
         Objects.requireNonNull(cliente, "El cliente no puede ser nulo.");
         this.cliente = cliente;
     }
@@ -58,7 +63,7 @@ public abstract class Trabajo {
         return vehiculo;
     }
 
-    protected void setVehiculo(Vehiculo vehiculo) {
+    private void setVehiculo(Vehiculo vehiculo) {
         Objects.requireNonNull(vehiculo, "El vehículo no puede ser nulo.");
         this.vehiculo = vehiculo;
     }
@@ -67,7 +72,7 @@ public abstract class Trabajo {
         return fechaInicio;
     }
 
-    protected void setFechaInicio(LocalDate fechaInicio) {
+    private void setFechaInicio(LocalDate fechaInicio) {
         Objects.requireNonNull(fechaInicio, "La fecha de inicio no puede ser nula.");
         if (fechaInicio.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha de inicio no puede ser futura.");
@@ -81,11 +86,11 @@ public abstract class Trabajo {
 
     private void setFechaFin(LocalDate fechaFin) {
         Objects.requireNonNull(fechaFin, "La fecha de fin no puede ser nula.");
-        if (fechaFin.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha de fin no puede ser futura.");
-        }
         if (fechaFin.isBefore(fechaInicio)) {
             throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio.");
+        }
+        if (fechaFin.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha de fin no puede ser futura.");
         }
         this.fechaFin = fechaFin;
     }
@@ -109,7 +114,6 @@ public abstract class Trabajo {
     }
 
     public void cerrar(LocalDate fechaFin) throws OperationNotSupportedException {
-        Objects.requireNonNull(fechaFin, "La fecha de fin no puede ser nula.");
         if (estaCerrado()) {
             throw new OperationNotSupportedException("El trabajo ya está cerrado.");
         }
@@ -117,11 +121,11 @@ public abstract class Trabajo {
     }
 
     public float getPrecio() {
-        return (getPrecioEspecifico() + getPrecioFijo());
+        return getPrecioFijo() + getPrecioEspecifico();
     }
 
-    public float getPrecioFijo() {
-        return getDias() * FACTOR_DIA;
+    private float getPrecioFijo() {
+        return (estaCerrado()) ? FACTOR_DIA * getDias() : 0;
     }
 
     private float getDias() {

@@ -9,7 +9,7 @@ import org.w3c.dom.NodeList;
 
 import javax.naming.OperationNotSupportedException;
 import javax.xml.parsers.DocumentBuilder;
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +22,8 @@ public class Clientes implements IClientes {
     private static final String NOMBRE = "nombre";
     private static final String DNI = "dni";
     private static final String TELEFONO = "telefono";
-    private List<Cliente> coleccionClientes;
+
+    private final List<Cliente> coleccionClientes;
     private static Clientes instancia;
 
     private Clientes() {
@@ -39,54 +40,61 @@ public class Clientes implements IClientes {
     @Override
     public void comenzar() {
         Document documentoXml = UtilidadesXml.leerDocumentoXml(FICHERO_CLIENTES);
-        procesarDocumentoXml(documentoXml);
+        if (documentoXml != null) {
+            procesarDocumentoXml(documentoXml);
+            System.out.printf("Fichero %s leído correctamente.%n", FICHERO_CLIENTES);
+        }
     }
 
     private void procesarDocumentoXml(Document documentoXml) {
-        if (documentoXml != null) {
-            System.out.println("Fichero leído correctamente.");
-            NodeList clientes = documentoXml.getElementsByTagName(CLIENTE);
-            for (int i = 0; i < clientes.getLength(); i++) {
-                Node cliente = clientes.item(i);
+        NodeList clientes = documentoXml.getElementsByTagName(CLIENTE);
+        for (int i = 0; i < clientes.getLength(); i++) {
+            Node cliente = clientes.item(i);
+            try {
                 if (cliente.getNodeType() == Node.ELEMENT_NODE) {
-                    coleccionClientes.add((getCliente((Element) cliente)));
+                    insertar(getCliente((Element) cliente));
                 }
+            } catch (OperationNotSupportedException|IllegalArgumentException|NullPointerException e) {
+                System.out.printf("Error al leer el cliente %d. --> %s%n", i, e.getMessage());
             }
-        } else {
-            throw new IllegalArgumentException("El fichero no se ha leído correctamente.");
         }
     }
 
     private Cliente getCliente(Element elemento) {
-        Cliente cliente;
-        String dni = elemento.getAttribute(DNI);
         String nombre = elemento.getAttribute(NOMBRE);
+        String dni = elemento.getAttribute(DNI);
         String telefono = elemento.getAttribute(TELEFONO);
-        cliente = new Cliente(nombre, dni, telefono);
-        return cliente;
+        return new Cliente(nombre, dni, telefono);
     }
 
     @Override
     public void terminar() {
         Document documentoXml = crearDocumentoXml();
-        documentoXml.appendChild(documentoXml.createElement(RAIZ));
-        for (Cliente cliente : coleccionClientes) {
-            documentoXml.getDocumentElement().appendChild(getElemento(documentoXml, cliente));
-        }
         UtilidadesXml.escribirDocumentoXml(documentoXml, FICHERO_CLIENTES);
     }
 
     private Document crearDocumentoXml() {
         DocumentBuilder constructor = UtilidadesXml.crearConstructorDocumentoXml();
-        return constructor.newDocument();
+        Document documentoXml = null;
+        if (constructor != null) {
+            documentoXml = constructor.newDocument();
+            documentoXml.appendChild(documentoXml.createElement(RAIZ));
+            for (Cliente cliente : coleccionClientes) {
+                Element elemento = getElemento(documentoXml, cliente);
+                if (elemento.getNodeType() == Node.ELEMENT_NODE) {
+                    documentoXml.getDocumentElement().appendChild(elemento);
+                }
+            }
+        }
+        return documentoXml;
     }
 
     private Element getElemento(Document documentoXml, Cliente cliente) {
-        Element elementoCliente = documentoXml.createElement(CLIENTE);
-        elementoCliente.setAttribute(DNI, cliente.getDni());
-        elementoCliente.setAttribute(NOMBRE, cliente.getNombre());
-        elementoCliente.setAttribute(TELEFONO, cliente.getTelefono());
-        return elementoCliente;
+        Element elemento = documentoXml.createElement(CLIENTE);
+        elemento.setAttribute(NOMBRE, cliente.getNombre());
+        elemento.setAttribute(DNI, cliente.getDni());
+        elemento.setAttribute(TELEFONO, cliente.getTelefono());
+        return elemento;
     }
 
     @Override
@@ -106,18 +114,18 @@ public class Clientes implements IClientes {
     @Override
     public boolean modificar(Cliente cliente, String nombre, String telefono) throws OperationNotSupportedException {
         Objects.requireNonNull(cliente, "No se puede modificar un cliente nulo.");
-        boolean modificado = false;
-        if (coleccionClientes.contains(cliente)) {
-            if (nombre != null && !nombre.isBlank()){
-                buscar(cliente).setNombre(nombre);
-                modificado = true;
-            }
-            if (telefono != null && !telefono.isBlank()){
-                buscar(cliente).setTelefono(telefono);
-                modificado = true;
-            }
-        } else {
+        Cliente clienteEncontrado = buscar(cliente);
+        if (clienteEncontrado == null) {
             throw new OperationNotSupportedException("No existe ningún cliente con ese DNI.");
+        }
+        boolean modificado = false;
+        if (nombre != null && !nombre.isBlank()) {
+            clienteEncontrado.setNombre(nombre);
+            modificado = true;
+        }
+        if (telefono != null && !telefono.isBlank()) {
+            clienteEncontrado.setTelefono(telefono);
+            modificado = true;
         }
         return modificado;
     }
@@ -126,16 +134,16 @@ public class Clientes implements IClientes {
     public Cliente buscar(Cliente cliente) {
         Objects.requireNonNull(cliente, "No se puede buscar un cliente nulo.");
         int indice = coleccionClientes.indexOf(cliente);
-        return indice == -1 ? null : coleccionClientes.get(indice);
+        return (indice == -1) ? null : coleccionClientes.get(indice);
     }
 
     @Override
     public void borrar(Cliente cliente) throws OperationNotSupportedException {
         Objects.requireNonNull(cliente, "No se puede borrar un cliente nulo.");
-        if (coleccionClientes.contains(cliente)) {
-            coleccionClientes.remove(cliente);
-        } else {
+        if (!coleccionClientes.contains(cliente)) {
             throw new OperationNotSupportedException("No existe ningún cliente con ese DNI.");
         }
+        coleccionClientes.remove(cliente);
     }
+
 }

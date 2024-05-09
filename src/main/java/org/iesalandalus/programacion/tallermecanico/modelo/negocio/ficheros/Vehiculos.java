@@ -1,4 +1,11 @@
 package org.iesalandalus.programacion.tallermecanico.modelo.negocio.ficheros;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import javax.naming.OperationNotSupportedException;
+import javax.xml.parsers.DocumentBuilder;
 
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
 import org.iesalandalus.programacion.tallermecanico.modelo.negocio.IVehiculos;
@@ -6,13 +13,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import javax.naming.OperationNotSupportedException;
-import javax.xml.parsers.DocumentBuilder;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class Vehiculos implements IVehiculos {
 
@@ -22,8 +22,10 @@ public class Vehiculos implements IVehiculos {
     private static final String MARCA = "marca";
     private static final String MODELO = "modelo";
     private static final String MATRICULA = "matricula";
-    private List<Vehiculo> coleccionVehiculos;
+
+    private final List<Vehiculo> coleccionVehiculos;
     private static Vehiculos instancia;
+
     private Vehiculos() {
         coleccionVehiculos = new ArrayList<>();
     }
@@ -38,54 +40,61 @@ public class Vehiculos implements IVehiculos {
     @Override
     public void comenzar() {
         Document documentoXml = UtilidadesXml.leerDocumentoXml(FICHERO_VEHICULOS);
-        procesarDocumentoXml(documentoXml);
+        if (documentoXml != null) {
+            procesarDocumentoXml(documentoXml);
+            System.out.printf("Fichero %s leído correctamente.%n", FICHERO_VEHICULOS);
+        }
     }
 
     private void procesarDocumentoXml(Document documentoXml) {
-        if (documentoXml != null) {
-            System.out.println("Fichero leído correctamente.");
-            NodeList vehiculos = documentoXml.getElementsByTagName(VEHICULO);
-            for (int i = 0; i < vehiculos.getLength(); i++) {
-                Node vehiculo = vehiculos.item(i);
+        NodeList vehiculos = documentoXml.getElementsByTagName(VEHICULO);
+        for (int i = 0; i < vehiculos.getLength(); i++) {
+            Node vehiculo = vehiculos.item(i);
+            try {
                 if (vehiculo.getNodeType() == Node.ELEMENT_NODE) {
-                    coleccionVehiculos.add((getVehiculo((Element) vehiculo)));
+                    insertar(getVehiculo((Element) vehiculo));
                 }
+            } catch (OperationNotSupportedException|IllegalArgumentException|NullPointerException e) {
+                System.out.printf("Error al leer el vehículo %d. --> %s%n", i, e.getMessage());
             }
-        } else {
-            throw new IllegalArgumentException("El fichero no se ha leído correctamente.");
         }
     }
 
     private Vehiculo getVehiculo(Element elemento) {
-        Vehiculo vehiculo;
-        String modelo = elemento.getAttribute(MODELO);
         String marca = elemento.getAttribute(MARCA);
+        String modelo = elemento.getAttribute(MODELO);
         String matricula = elemento.getAttribute(MATRICULA);
-        vehiculo = new Vehiculo(marca, modelo, matricula);
-        return vehiculo;
+        return new Vehiculo(marca, modelo, matricula);
     }
 
     @Override
     public void terminar() {
         Document documentoXml = crearDocumentoXml();
-        documentoXml.appendChild(documentoXml.createElement(RAIZ));
-        for (Vehiculo vehiculo : coleccionVehiculos) {
-            documentoXml.getDocumentElement().appendChild(getElemento(documentoXml, vehiculo));
-        }
         UtilidadesXml.escribirDocumentoXml(documentoXml, FICHERO_VEHICULOS);
     }
 
     private Document crearDocumentoXml() {
         DocumentBuilder constructor = UtilidadesXml.crearConstructorDocumentoXml();
-        return constructor.newDocument();
+        Document documentoXml = null;
+        if (constructor != null) {
+            documentoXml = constructor.newDocument();
+            documentoXml.appendChild(documentoXml.createElement(RAIZ));
+            for (Vehiculo vehiculo : coleccionVehiculos) {
+                Element elemento = getElemento(documentoXml, vehiculo);
+                if (elemento.getNodeType() == Node.ELEMENT_NODE) {
+                    documentoXml.getDocumentElement().appendChild(elemento);
+                }
+            }
+        }
+        return documentoXml;
     }
 
     private Element getElemento(Document documentoXml, Vehiculo vehiculo) {
-        Element elementoVehiculo = documentoXml.createElement(VEHICULO);
-        elementoVehiculo.setAttribute(MODELO, vehiculo.modelo());
-        elementoVehiculo.setAttribute(MARCA, vehiculo.marca());
-        elementoVehiculo.setAttribute(MATRICULA, vehiculo.matricula());
-        return elementoVehiculo;
+        Element elemento = documentoXml.createElement(VEHICULO);
+        elemento.setAttribute(MARCA, vehiculo.marca());
+        elemento.setAttribute(MODELO, vehiculo.modelo());
+        elemento.setAttribute(MATRICULA, vehiculo.matricula());
+        return elemento;
     }
 
     @Override
@@ -96,27 +105,25 @@ public class Vehiculos implements IVehiculos {
     @Override
     public void insertar(Vehiculo vehiculo) throws OperationNotSupportedException {
         Objects.requireNonNull(vehiculo, "No se puede insertar un vehículo nulo.");
-        if (!coleccionVehiculos.contains(vehiculo)) {
-            coleccionVehiculos.add(vehiculo);
-        } else {
+        if (coleccionVehiculos.contains(vehiculo)) {
             throw new OperationNotSupportedException("Ya existe un vehículo con esa matrícula.");
-        }
+        }             
+        coleccionVehiculos.add(vehiculo);
     }
 
     @Override
     public Vehiculo buscar(Vehiculo vehiculo) {
         Objects.requireNonNull(vehiculo, "No se puede buscar un vehículo nulo.");
         int indice = coleccionVehiculos.indexOf(vehiculo);
-        return indice == -1 ? null : coleccionVehiculos.get(indice);
+        return (indice == -1) ? null : coleccionVehiculos.get(indice);
     }
 
     @Override
     public void borrar(Vehiculo vehiculo) throws OperationNotSupportedException {
         Objects.requireNonNull(vehiculo, "No se puede borrar un vehículo nulo.");
-        if (coleccionVehiculos.contains(vehiculo)) {
-            coleccionVehiculos.remove(vehiculo);
-        } else {
+        if (!coleccionVehiculos.contains(vehiculo)) {
             throw new OperationNotSupportedException("No existe ningún vehículo con esa matrícula.");
         }
+        coleccionVehiculos.remove(vehiculo);
     }
 }

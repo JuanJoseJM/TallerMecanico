@@ -7,16 +7,16 @@ public class Mecanico extends Trabajo {
 
     private static final float FACTOR_HORA = 30F;
     private static final float FACTOR_PRECIO_MATERIAL = 1.5F;
-
-    protected float precioMaterial;
+    private float precioMaterial;
 
     public Mecanico(Cliente cliente, Vehiculo vehiculo, LocalDate fechaInicio) {
         super(cliente, vehiculo, fechaInicio);
+        precioMaterial = 0;
     }
 
     public Mecanico(Mecanico mecanico) {
         super(mecanico);
-        this.precioMaterial = mecanico.precioMaterial;
+        precioMaterial = mecanico.precioMaterial;
     }
 
     public float getPrecioMaterial() {
@@ -24,25 +24,29 @@ public class Mecanico extends Trabajo {
     }
 
     public void anadirPrecioMaterial(float precioMaterial) throws OperationNotSupportedException {
-        if (estaCerrado()) {
-            throw new OperationNotSupportedException("No se puede añadir precio del material, ya que el trabajo mecánico está cerrado.");
-        }
         if (precioMaterial <= 0) {
             throw new IllegalArgumentException("El precio del material a añadir debe ser mayor que cero.");
+        }
+        if (estaCerrado()) {
+            throw new OperationNotSupportedException("No se puede añadir precio del material, ya que el trabajo mecánico está cerrado.");
         }
         this.precioMaterial += precioMaterial;
     }
 
+    @Override
     public float getPrecioEspecifico() {
-        return (horas * FACTOR_HORA) + (precioMaterial * FACTOR_PRECIO_MATERIAL);
+        return (estaCerrado()) ? FACTOR_HORA * getHoras() + FACTOR_PRECIO_MATERIAL * getPrecioMaterial() : 0;
     }
 
     @Override
     public String toString() {
-        if (estaCerrado()) {
-            return String.format("Mecánico -> %s - %s (%s - %s): %s horas, %.2f € en material, %.2f € total", this.cliente, this.vehiculo, this.fechaInicio.format(FORMATO_FECHA), this.fechaFin.format(FORMATO_FECHA), this.horas, this.precioMaterial, getPrecio());
+        String cadena;
+        if (!estaCerrado()) {
+            cadena = String.format("Mecánico -> %s - %s (%s - ): %d horas, %.2f € en material", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getHoras(), precioMaterial);
         } else {
-            return String.format("Mecánico -> %s - %s (%s - ): %s horas, %.2f € en material", this.cliente, this.vehiculo, this.fechaInicio.format(FORMATO_FECHA), this.horas, this.precioMaterial);
+            cadena = String.format("Mecánico -> %s - %s (%s - %s): %d horas, %.2f € en material, %.2f € total", getCliente(), getVehiculo(), getFechaInicio().format(FORMATO_FECHA), getFechaFin().format(FORMATO_FECHA), getHoras(), precioMaterial, getPrecio());
         }
+        return cadena;
     }
+
 }
